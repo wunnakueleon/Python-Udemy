@@ -38,7 +38,10 @@ while game_is_on:
         game_is_on = False
 
     # Detect collision with the body
-    
+    for every_seg in snake.segments[1:]:
+        if (snake.head.distance(every_seg.position()) <= 10):
+            scoreboard.game_over()
+            game_is_on = False
 
     screen.update()
     time.sleep(0.1)
