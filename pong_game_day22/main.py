@@ -44,7 +44,15 @@ while game_is_on:
         dy *= -1
 
     if x_cor >= 350 or x_cor <= -350:
+        right_paddle.paddle.hideturtle()
+        left_paddle.paddle.hideturtle()
+        ball.hideturtle()
+        print("Game Over Mann")
+        game_is_on = False
+
+    if right_paddle.paddle.distance(x_cor, y_cor) <= 30 or left_paddle.paddle.distance(x_cor, y_cor) <= 30:
         dx *= -1
+        
 
     x_cor += dx
     y_cor += dy
