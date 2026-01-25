@@ -98,19 +98,4 @@ reset_button.grid(column=2, row=2)
 check_mark = Label(text=streak, fg=PURPLE, bg=PURPLE)
 check_mark.grid(column=1, row=3)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 window.mainloop()
