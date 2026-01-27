@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 from random import choice, randint, shuffle
 import pyperclip
-
+import json
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 def generate_password():
@@ -39,20 +39,26 @@ def get_inputs():
     email_input_get = email_input.get()
     password_input_get = password_input.get()
 
-    if len(password_input_get) == 0 or len(website_input_get) == 0:
+    new_data = {
+        website_input_get :{
+            "email: ": email_input_get,
+            "password:": password_input_get
+        }
+    }
+
+    if len(password_input_get) == 0:
         password_check = messagebox.askretrycancel(title="Password or Website Needs Modification", message=f"Password or Website cannot be empty")
 
     else:
-        is_ok = messagebox.askokcancel(title=website_input_get, message=f"These are the details entered: \nEmail: {email_input_get} "
-                            f"\nPassword: {password_input_get} \nIs it Ok to save?")
         
-        if is_ok:
+        with open("password-manager-json/data.json", "r") as data_file:
+            # json.dump(new_data, data_file, indent=5)
+            # data = json.load(data_file)
+            print("bro")
+            
 
-            with open("password-manager-start/password_manager.txt", mode="a") as password_manage_file:
-                password_manage_file.write("\n" + f"{website_input_get} | {email_input_get} | {password_input_get}")
-
-            website_input.delete(0, END)
-            password_input.delete(0, END)
+        website_input.delete(0, END)
+        password_input.delete(0, END)
 
         print(website_input_get)
         print(email_input_get)
@@ -67,7 +73,7 @@ window.config(padx=20, pady=20)
 
 
 canvas = Canvas(width=200, height=200)
-key_image = PhotoImage(file="password-manager-start/logo.png")
+key_image = PhotoImage(file="password-manager-json/logo.png")
 canvas.create_image(100, 95, image=key_image)
 canvas.grid(column=1, row=0)
 
