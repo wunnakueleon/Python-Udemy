@@ -41,8 +41,8 @@ def get_inputs():
 
     new_data = {
         website_input_get :{
-            "email: ": email_input_get,
-            "password:": password_input_get
+            "email": email_input_get,
+            "password": password_input_get
         }
     }
 
@@ -51,18 +51,43 @@ def get_inputs():
 
     else:
         
-        with open("password-manager-json/data.json", "r") as data_file:
-            # json.dump(new_data, data_file, indent=5)
-            # data = json.load(data_file)
-            print("bro")
+        try:
+            with open("password-manager-json/data.json", "r") as data_file:
+                data = json.load(data_file)
+                
+        except FileNotFoundError:
+            with open("password-manager-json/data.json", "w") as data_file:
+                json.dump(new_data, data_file, indent=4)
+
+        else:
+            data.update(new_data)
+
+            with open("password-manager-json/data.json", "w") as data_file:
+                json.dump(data, data_file, indent=4)
             
+        finally:
+            website_input.delete(0, END)
+            password_input.delete(0, END)
 
-        website_input.delete(0, END)
-        password_input.delete(0, END)
+            print(website_input_get)
+            print(email_input_get)
+            print(password_input_get)
 
-        print(website_input_get)
-        print(email_input_get)
-        print(password_input_get)
+
+def search_password():
+    website_get = website_input.get()
+    with open("password-manager-json/data.json") as data_file:
+        data = json.load(data_file)
+
+    try:
+        email = data[website_get]["email"]
+        password = data[website_get]["password"] 
+    except KeyError:
+        print("No Key")
+        no_key = messagebox.showinfo(title="keyError", message=f"{website_get} \n Not Found")
+    else:
+        key_found = messagebox.showinfo(title=website_get, message=f"{data[website_get]["email"]} \n{data[website_get]["password"]}")
+
 
 
 # ---------------------------- UI SETUP ------------------------------- #
@@ -86,8 +111,8 @@ email_label.grid(column=0, row=2)
 password_label = Label(text="Password:")
 password_label.grid(column=0, row=3)
 
-website_input = Entry(width=35)
-website_input.grid(column=1, row=1, columnspan=2)
+website_input = Entry(width=18)
+website_input.grid(column=1, row=1, columnspan=1)
 website_input.focus()
 
 email_input = Entry(width=35)
@@ -97,11 +122,14 @@ email_input.insert(END, "wunna@gmail.com")
 password_input = Entry(width=18)
 password_input.grid(column=1, row=3)
 
-generate_button = Button(text="Generate Password", width=11, command=generate_password)
+generate_button = Button(text="Generate Password", command=generate_password)
 generate_button.grid(column=2, row=3)
 
 add_button = Button(text="Add", width=33, command=get_inputs)
 add_button.grid(column=1, row=4, columnspan=2)
+
+search_button = Button(text="Search", command=search_password, width=10)
+search_button.grid(column=2, row=1)
 
 window.mainloop()
 
